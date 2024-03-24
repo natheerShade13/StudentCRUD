@@ -5,9 +5,8 @@ import org.springframework.stereotype.Service;
 import za.ac.cput.domain.Student;
 import za.ac.cput.repository.StudentRepository;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -24,6 +23,11 @@ public class StudentService {
     }
 
     public void addNewStudent(Student student) {
-
+        Optional<Student> student1 = studentRepository.findStudentByEmail(student.getEmail());
+        if(student1.isPresent()){
+            throw new IllegalStateException("Email already taken.");
+        }
+        studentRepository.save(student);
+        //System.out.println(student);
     }
 }
